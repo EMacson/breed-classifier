@@ -8,12 +8,31 @@
   <input type="file" id="imageInput" />
   <button onclick="submitImage()">Submit</button>
 
+  <h3>Image Preview:</h3>
+  <img id="preview" src="" alt="Image preview" width="300" style="display:none;" />
+
   <h3>Prediction:</h3>
   <ul id="results"></ul>
 
   <script>
+    const input = document.getElementById("imageInput");
+    const preview = document.getElementById("preview");
+
+    input.addEventListener("change", () => {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          preview.src = e.target.result;
+          preview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.style.display = "none";
+      }
+    });
+
     async function submitImage() {
-      const input = document.getElementById("imageInput");
       const file = input.files[0];
       if (!file) return alert("Please upload a file.");
 
